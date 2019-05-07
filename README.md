@@ -1,4 +1,4 @@
--pbrt + oidn, Version 1.0
+pbrt + oidn, Version 1.0
 =========================
 
 Build PBRT with README from their github: [pbrt-v3](https://github.com/mmp/pbrt-v3/)
@@ -26,30 +26,30 @@ Examples
 ### Killeroo ###
 
 - 8 Samples Per Pixel
-![](oidn_images/killeroo-simple_8spp.png?raw=true Killeroo_8spp)
+![](oidn_images/killeroo-simple_8spp.png)
 
 - Denoised
-![](oidn_images/killeroo-simple_denoise.png?raw=true Killeroo_Denoise)
+![](oidn_images/killeroo-simple_denoise.png)
 
 - Reference (1024 Samples Per Pixel)
-![](oidn_images/killeroo-simple_1024spp.png?raw=true Killeroo_1024spp)
+![](oidn_images/killeroo-simple_1024spp.png)
 
 ### Dining Room ###
 
 - 8 Samples Per Pixel (PBRT_SAMPLED_SPECTRUM=true)
-![](oidn_images/dining-room_CFL4K_s60_8spp.png?raw=true Dining-Room_8spp)
+![](oidn_images/dining-room_CFL4K_s60_8spp.png)
 
 - 8spp Denoised (PBRT_SAMPLED_SPECTRUM=true)
-![](oidn_images/dining-room_CFL4K_s60_8spp_denoise.png?raw=true Dining-Room_Denoise)
+![](oidn_images/dining-room_CFL4K_s60_8spp_denoise.png)
 
 - 64 Samples Per Pixel (PBRT_SAMPLED_SPECTRUM=true)
-![](oidn_images/dining-room_CFL4K_s60_64spp.png?raw=true Dining-Room_8spp)
+![](oidn_images/dining-room_CFL4K_s60_64spp.png)
 
 - 64spp Denoised (PBRT_SAMPLED_SPECTRUM=true)
-![](oidn_images/dining-room_CFL4K_s60_64spp_denoise.png?raw=true Dining-Room_8spp)
+![](oidn_images/dining-room_CFL4K_s60_64spp_denoise.png)
 
 - Reference (1024 Samples Per Pixel, PBRT_SAMPLED_SPECTRUM=true)
-![](oidn_images/dining-room_CFL4K_s60_1024spp.png?raw=true Dining-Room_1024spp)
+![](oidn_images/dining-room_CFL4K_s60_1024spp.png)
 
 
 Notes

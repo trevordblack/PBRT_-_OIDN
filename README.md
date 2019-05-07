@@ -26,29 +26,37 @@ Examples
 ### Killeroo ###
 
 - 8 Samples Per Pixel
+
 ![](oidn_images/killeroo-simple_8spp.png)
 
 - Denoised
+
 ![](oidn_images/killeroo-simple_denoise.png)
 
 - Reference (1024 Samples Per Pixel)
+
 ![](oidn_images/killeroo-simple_1024spp.png)
 
 ### Dining Room ###
 
 - 8 Samples Per Pixel (PBRT_SAMPLED_SPECTRUM=true)
+
 ![](oidn_images/dining-room_CFL4K_s60_8spp.png)
 
 - 8spp Denoised (PBRT_SAMPLED_SPECTRUM=true)
+
 ![](oidn_images/dining-room_CFL4K_s60_8spp_denoise.png)
 
 - 64 Samples Per Pixel (PBRT_SAMPLED_SPECTRUM=true)
+
 ![](oidn_images/dining-room_CFL4K_s60_64spp.png)
 
 - 64spp Denoised (PBRT_SAMPLED_SPECTRUM=true)
+
 ![](oidn_images/dining-room_CFL4K_s60_64spp_denoise.png)
 
 - Reference (1024 Samples Per Pixel, PBRT_SAMPLED_SPECTRUM=true)
+
 ![](oidn_images/dining-room_CFL4K_s60_1024spp.png)
 
 

@@ -57,6 +57,13 @@ if(NOT IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/src/ext/zlib/doc")
     "\"git submodule update --init --recursive\"")
 endif()
 
+if(NOT IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/src/ext/oidn/cmake")
+  message(FATAL_ERROR "The oidn submodule directory is missing! "
+    "You probably did not clone the project with --recursive, or you first checked out "
+    "pbrt before it was added. It is possible to recover by running "
+    "\"git submodule update --init --recursive\"")
+endif()
+
 FIND_PACKAGE ( Sanitizers )
 FIND_PACKAGE ( Threads )
 
@@ -199,7 +206,7 @@ int main() {
    fstat(fd, &s);
    size_t len = s.st_size;
    void *ptr = mmap(0, len, PROT_READ, MAP_FILE | MAP_SHARED, fd, 0);
-   munmap(ptr, len);   
+   munmap(ptr, len);
 }
 " HAVE_MMAP )
 if ( HAVE_MMAP )
@@ -364,6 +371,15 @@ SET_PROPERTY(TARGET Ptex_static ptxinfo halftest ftest rtest wtest PROPERTY FOLD
 INCLUDE_DIRECTORIES ( src/ext/ptex/src/ptex )
 
 ###########################################################################
+# oidn
+
+ADD_SUBDIRECTORY ( src/ext/oidn )
+SET_PROPERTY (
+    TARGET OpenImageDenoise PROPERTY FOLDER "ext"
+)
+INCLUDE_DIRECTORIES ( src/ext/oidn/include  )
+
+###########################################################################
 # On to pbrt...
 
 SET ( PBRT_CORE_SOURCE
@@ -516,6 +532,7 @@ SET(ALL_PBRT_LIBS
   glog
   Ptex_static
   ${ZLIB_LIBRARY}
+  OpenImageDenoise
 )
 
 # Main renderer

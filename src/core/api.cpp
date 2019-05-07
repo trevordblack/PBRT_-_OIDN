@@ -1036,6 +1036,14 @@ void pbrtPixelFilter(const std::string &name, const ParamSet &params) {
 void pbrtFilm(const std::string &type, const ParamSet &params) {
     VERIFY_OPTIONS("Film");
     renderOptions->FilmParams = params;
+    if (PbrtOptions.denoise)
+    {
+        std::string name = std::string("denoise");
+        bool* pDenoise = new bool[1];
+        *pDenoise = true;
+        std::unique_ptr<bool[]> upDenoise(pDenoise);
+        renderOptions->FilmParams.AddBool(name, std::move(upDenoise), 1);
+    }
     renderOptions->FilmName = type;
     if (PbrtOptions.cat || PbrtOptions.toPly) {
         printf("%*sFilm \"%s\" ", catIndentCount, "", type.c_str());

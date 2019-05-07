@@ -47,6 +47,7 @@ static void usage(const char *msg = nullptr) {
     fprintf(stderr, R"(usage: pbrt [<options>] <filename.pbrt...>
 Rendering options:
   --cropwindow <x0,x1,y0,y1> Specify an image crop window.
+  --denoise            Run denoiser on final frame.
   --help               Print this help text.
   --nthreads <num>     Use specified number of threads for rendering.
   --outfile <filename> Write the final image to the given filename.
@@ -113,6 +114,8 @@ int main(int argc, char *argv[]) {
             FLAGS_minloglevel = atoi(argv[++i]);
         } else if (!strncmp(argv[i], "--minloglevel=", 14)) {
             FLAGS_minloglevel = atoi(&argv[i][14]);
+        } else if (!strcmp(argv[i], "--denoise") || !strcmp(argv[i], "-denoise")) {
+            options.denoise = true;
         } else if (!strcmp(argv[i], "--quick") || !strcmp(argv[i], "-quick")) {
             options.quickRender = true;
         } else if (!strcmp(argv[i], "--quiet") || !strcmp(argv[i], "-quiet")) {

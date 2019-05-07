@@ -61,7 +61,8 @@ class Film {
     Film(const Point2i &resolution, const Bounds2f &cropWindow,
          std::unique_ptr<Filter> filter, Float diagonal,
          const std::string &filename, Float scale,
-         Float maxSampleLuminance = Infinity);
+         Float maxSampleLuminance = Infinity,
+         bool denoise = false);
     Bounds2i GetSampleBounds() const;
     Bounds2f GetPhysicalExtent() const;
     std::unique_ptr<FilmTile> GetFilmTile(const Bounds2i &sampleBounds);
@@ -70,6 +71,7 @@ class Film {
     void AddSplat(const Point2f &p, Spectrum v);
     void WriteImage(Float splatScale = 1);
     void Clear();
+    void Denoise(Float* rgb, int width, int height);
 
     // Film Public Data
     const Point2i fullResolution;
@@ -77,6 +79,7 @@ class Film {
     std::unique_ptr<Filter> filter;
     const std::string filename;
     Bounds2i croppedPixelBounds;
+    bool denoise;
 
   private:
     // Film Private Data

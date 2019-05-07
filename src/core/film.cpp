@@ -36,6 +36,7 @@
 #include "paramset.h"
 #include "imageio.h"
 #include "stats.h"
+#include <OpenImageDenoise/oidn.hpp>
 
 namespace pbrt {
 
@@ -44,13 +45,15 @@ STAT_MEMORY_COUNTER("Memory/Film pixels", filmPixelMemory);
 // Film Method Definitions
 Film::Film(const Point2i &resolution, const Bounds2f &cropWindow,
            std::unique_ptr<Filter> filt, Float diagonal,
-           const std::string &filename, Float scale, Float maxSampleLuminance)
+           const std::string &filename, Float scale, Float maxSampleLuminance,
+           bool denoise)
     : fullResolution(resolution),
       diagonal(diagonal * .001),
       filter(std::move(filt)),
       filename(filename),
       scale(scale),
-      maxSampleLuminance(maxSampleLuminance) {
+      maxSampleLuminance(maxSampleLuminance), 
+      denoise(denoise) {
     // Compute film image bounds
     croppedPixelBounds =
         Bounds2i(Point2i(std::ceil(fullResolution.x * cropWindow.pMin.x),
@@ -203,11 +206,44 @@ void Film::WriteImage(Float splatScale) {
         ++offset;
     }
 
+    // Denoise
+    if ( denoise ) 
+    {
+        int width  = croppedPixelBounds.pMax.x - croppedPixelBounds.pMin.x;
+        int height = croppedPixelBounds.pMax.y - croppedPixelBounds.pMin.y;
+        Denoise(rgb.get(), width, height);
+    }
+
     // Write RGB image
     LOG(INFO) << "Writing image " << filename << " with bounds " <<
         croppedPixelBounds;
     pbrt::WriteImage(filename, &rgb[0], croppedPixelBounds, fullResolution);
 }
+
+void errorCallback(void* userPtr, oidn::Error error, const char* message)
+{
+    throw std::runtime_error(message);
+}
+
+void Film::Denoise(Float* rgb, int width, int height)
+{
+    oidn::DeviceRef device = oidn::newDevice();
+
+    const char* errorMessage;
+    if (device.getError(errorMessage) != oidn::Error::None)
+        throw std::runtime_error(errorMessage);
+    device.setErrorFunction(errorCallback);
+    device.commit();
+
+    oidn::FilterRef filter = device.newFilter("RT");
+    filter.setImage("color", rgb, oidn::Format::Float3, width, height);
+    filter.setImage("output", rgb, oidn::Format::Float3, width, height);
+    filter.set("hdr", true);
+    filter.commit();
+    filter.execute();
+}
+
+
 
 Film *CreateFilm(const ParamSet &params, std::unique_ptr<Filter> filter) {
     std::string filename;
@@ -246,8 +282,9 @@ Film *CreateFilm(const ParamSet &params, std::unique_ptr<Filter> filter) {
     Float diagonal = params.FindOneFloat("diagonal", 35.);
     Float maxSampleLuminance = params.FindOneFloat("maxsampleluminance",
                                                    Infinity);
+    bool denoise = params.FindOneBool("denoise", false);
     return new Film(Point2i(xres, yres), crop, std::move(filter), diagonal,
-                    filename, scale, maxSampleLuminance);
+                    filename, scale, maxSampleLuminance, denoise);
 }
 
 }  // namespace pbrt
